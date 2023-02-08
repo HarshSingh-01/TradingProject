@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, response, HttpResponseRedirect
 from .forms import TradingForm
 # Create your views here.
 
@@ -9,7 +9,7 @@ def handle_upload_file(f):
         for chunk in f.chunks():  
             destination.write(chunk)  
 
-def building_json_outfile(candle):
+def json_output_file(candle):
 
     import json, os
     import pandas as pd
@@ -56,10 +56,20 @@ def building_json_outfile(candle):
 def index(request):
     if request.method=='POST':
         trade = TradingForm(request.POST, request.FILES)
+        # file_upload = request.FILES['file']
+        # candel_value = request.POST['candle_value']
+        # print(candel_value)
         if trade.is_valid():
             handle_upload_file(request.FILES['file'])
-            return HttpResponse('Form submitted successfully.')
+            context = {'form': trade}
+            candle = int(request.POST['candle'])
+            json_output_file(candle)
+            return HttpResponseRedirect('/download/')
 
     trade = TradingForm()
-    return render(request, 'index.html', {'form': trade})
+   
+    
+
+    return render(request, 'index.html', context=context)
+
         
