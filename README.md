@@ -7,7 +7,7 @@ This is project is Dataviv assignment.
 
 ```sh
 git clone https://github.com/HarshSingh-01/TradingProject
-cd Social-Book
+cd TradingProject
 ```
 
 ### 2. Installing dependencies
