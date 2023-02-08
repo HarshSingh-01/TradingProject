@@ -14,14 +14,15 @@ def json_output_file(candle):
     import json, os
     import pandas as pd
     import numpy as np
-
-    csv_file = os.listdir('../upload/')[0]
-    df = pd.read_csv('../upload/'+ csv_file)
-    os.remove('../upload/'+ csv_file)
+    folder_path = '/Users/harsh/Desktop/Projects/Django/TradingProject/upload/'
+    csv_file = os.listdir(folder_path)[0]
+    df = pd.read_csv(folder_path+ csv_file)
+    os.remove(folder_path+ csv_file)
     df['DATE'] = pd.to_datetime(df['DATE'], format='%Y%m%d')
 
 
-    json_file_path = '../download/candle.json'
+    download_path = '/Users/harsh/Desktop/Projects/Django/TradingProject/download/'
+    json_file_path = download_path + 'candle.json'
     if os.path.exists(json_file_path):
         os.remove(json_file_path)
 
@@ -61,15 +62,19 @@ def index(request):
         # print(candel_value)
         if trade.is_valid():
             handle_upload_file(request.FILES['file'])
-            context = {'form': trade}
             candle = int(request.POST['candle'])
             json_output_file(candle)
-            return HttpResponseRedirect('/download/')
+            return HttpResponseRedirect('/download')
 
     trade = TradingForm()
+    context = {'form': trade}
    
     
 
     return render(request, 'index.html', context=context)
+
+def download(request):
+    return render(request, 'download.html')
+
 
         
