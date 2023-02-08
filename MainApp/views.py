@@ -14,14 +14,15 @@ def json_output_file(candle):
     import json, os
     import pandas as pd
     import numpy as np
-    folder_path = '/Users/harsh/Desktop/Projects/Django/TradingProject/upload/'
+    folder_path = 'upload/'
     csv_file = os.listdir(folder_path)[0]
-    df = pd.read_csv(folder_path+ csv_file)
-    os.remove(folder_path+ csv_file)
+    df = pd.read_csv(folder_path + csv_file)
+    if os.path.exists(folder_path + csv_file):
+         os.remove(folder_path + csv_file)
     df['DATE'] = pd.to_datetime(df['DATE'], format='%Y%m%d')
 
 
-    download_path = '/Users/harsh/Desktop/Projects/Django/TradingProject/download/'
+    download_path = 'download/'
     json_file_path = download_path + 'candle.json'
     if os.path.exists(json_file_path):
         os.remove(json_file_path)
